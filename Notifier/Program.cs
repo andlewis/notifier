@@ -18,10 +18,23 @@ using (var reader = new StreamReader(path))
 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
 {
     var records = csv.GetRecords<Message>();
+    char currentDay = 'M';
+    switch (DateTime.Today.DayOfWeek)
+    {
+        case DayOfWeek.Monday: currentDay = 'M'; break;
+        case DayOfWeek.Tuesday: currentDay = 'T'; break;
+        case DayOfWeek.Wednesday: currentDay = 'W'; break;
+        case DayOfWeek.Thursday: currentDay = 'R'; break;
+        case DayOfWeek.Friday: currentDay = 'F'; break;
+        case DayOfWeek.Saturday: currentDay = 'S'; break;
+        case DayOfWeek.Sunday: currentDay = 'U'; break;
+    }
 
     foreach (var m in records)
     {
-        if (m.Time == DateTime.Now.ToString("HH:mm"))
+        var days = m.Days?.ToCharArray() ?? "MTWRFSU".ToCharArray();
+
+        if (m.Time == DateTime.Now.ToString("HH:mm") && (days.Contains(currentDay) || string.IsNullOrWhiteSpace(m.Days)))
         {
             var message = MessageResource.Create(
                 body: $"{m.Time}: {m.Text}",
