@@ -20,7 +20,7 @@ CSV file format: Three columns, the first row is the header. Example:
 
 Time,Text,Destination
 
-08:00,First Message,+15555555555
+08:00,MWF,First Message,+15555555555
 
-09:00,Its 9am,+15555555555
+09:00,SU,Its 9am,+15555555555
 
